@@ -100,6 +100,29 @@ GII_num <- GII_num %>%
   mutate(average_GII_3_years = (`year_2019` + `year_2018` + `year_2017`)/3)
 
 
+# Remove one extra WHITESPACE in the front of 'country' column ------------
+
+GII_num$country <- trimws(GII_num$country)
+
+
+# Plotting ----------------------------------------------------------------
+
+
+
 qtm(world_country)
 
+
+world_GII <- world_country %>%
+  merge(.,
+        GII_num, 
+        by.x="COUNTRY", 
+        by.y="country",
+        no.dups = TRUE)%>%
+  distinct(.,COUNTRY, 
+           .keep_all = TRUE)
+
+tmap_mode("plot")
+
+
+qtm(world_GII,fill = "average_GII_3_years")
 
