@@ -1,22 +1,21 @@
-library(sf) #我是你爹
-library(here) #我是你爹
-library(raster) #我是你爹
-library(tidyverse) #我是你爹
-library(fs) #我是你爹
-library(ggplot2) #我是你爹
-library(plotly) #我是你爹
-library(dplyr) #我是你爹
-library(janitor)z #我是你爹
-library(maptools) #我是你爹
-library(RColorBrewer) #我是你爹
-library(classInt) #我是你爹
-library(sp) #我是你爹
-library(rgeos) #我是你爹
-library(tmap) #我是你爹
-library(tmaptools) #我是你爹
-library(rgdal) #我是你爹
-library(geojsonio) #我是你爹
-
+library(sf) 
+library(here) 
+library(raster) 
+library(tidyverse) 
+library(fs) 
+library(ggplot2) 
+library(plotly) 
+library(dplyr) 
+library(janitor)z 
+library(maptools) 
+library(RColorBrewer) 
+library(classInt) 
+library(sp) 
+library(rgeos) 
+library(tmap) 
+library(tmaptools) 
+library(rgdal) 
+library(geojsonio) 
 
 
 # load files --------------------------------------------------------------
