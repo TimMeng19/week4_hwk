@@ -26,6 +26,14 @@ GII <- read.csv("Gender Inequality Index (GII).csv",
                 sep = ",",
                 encoding = "latin1")
 
+
+#Adam wrote this chunck for me, it can directly clean up NAs, skip top rolls, and select columns we want!
+GII <- read_csv("Gender Inequality Index (GII)_1.csv",
+                skip = 5,
+                na = c("", "NA", ".."),
+                locale = locale(encoding = "latin1"),
+                col_select = c(1:3,5,7,9,11,13,15,17,19,21,23,25,27))
+
 world_country <- st_read(here::here("World_Countries_(Generalized).geojson"))
 
 plot(world_country)
@@ -83,13 +91,13 @@ Datatypelist_3 <- GII_3 %>%
   pivot_longer(everything(), 
                names_to="All_variables", 
                values_to="Variable_class")
-
+GII_num = GII_3
 
 # extract numeric columns -------------------------------------------------
 
-
-GII_num <-GII_3 %>%
-  dplyr::select(c(1,2,16,17,18,19,20,21,22,23,24,25,26,27,28))
+#not necessary anymore, since Adam has down selecting at the beginning
+#GII_num <-GII_3 %>%
+#  dplyr::select(c(1,2,16,17,18,19,20,21,22,23,24,25,26,27,28))
 
 
 # calculate average GII in the most recent 3 years ------------------------
@@ -104,6 +112,20 @@ GII_num <- GII_num %>%
 
 GII_num$country <- trimws(GII_num$country)
 
+edit(GII_num)
+
+
+
+# Use the package "Countrycode" to add ISO code for countries -------------
+
+install.packages("countrycode")
+library(countrycode)
+
+GII_ISO <- GII_num %>% 
+  clean_names() %>% 
+  slice(1:189,) %>% 
+  mutate(iso_code=countrycode(country,origin = 'country.name',destination = 'iso2c'))
+
 
 # Plotting ----------------------------------------------------------------
 
@@ -114,9 +136,9 @@ qtm(world_country)
 
 world_GII <- world_country %>%
   merge(.,
-        GII_num, 
-        by.x="COUNTRY", 
-        by.y="country",
+        GII_ISO, 
+        by.x="ISO", 
+        by.y="iso_code",
         no.dups = TRUE)%>%
   distinct(.,COUNTRY, 
            .keep_all = TRUE)
@@ -124,5 +146,5 @@ world_GII <- world_country %>%
 tmap_mode("plot")
 
 
-qtm(world_GII,fill = "average_GII_3_years")
+qtm(world_GII,fill = "average_gii_3_years")
 
